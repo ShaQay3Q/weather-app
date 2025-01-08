@@ -19,7 +19,7 @@ const url =
 // 	console.log(body); // Print the HTML for the Google homepage.
 // });
 
-request({ url: url }, (error, response, body) => {
+request(url, { json: true }, (error, response, body) => {
 	log(chalk.bold.yellow.inverse("Request"));
 	const data = JSON.parse(body);
 
