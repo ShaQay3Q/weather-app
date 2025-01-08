@@ -21,9 +21,11 @@ const url =
 
 request({ url: url }, (error, response, body) => {
 	log(chalk.bold.yellow.inverse("Request"));
+	const data = JSON.parse(body);
 
 	console.log(response.body);
 	log(body);
+	log(data.current);
 });
 
 // postmanRequest(url, function (error, response, body) {
@@ -45,7 +47,7 @@ axios
 	})
 	.then(function (response) {
 		console.log(chalk.bold.yellow.inverse("Axios"));
-		console.log(response.data);
+		console.log(response.data.current);
 	})
 	.catch(function (error) {
 		console.log(error);
