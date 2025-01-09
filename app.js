@@ -21,7 +21,7 @@ const url =
 // });
 
 // request({url: url, json: true}, error, response)
-request(url, { json: true }, (error, response, body) => {
+request(url + "&units=f", { json: true }, (error, response, body) => {
 	log(chalk.bold.yellow.inverse("Request"));
 	// const data = JSON.parse(body); //! by setting json to true, there is no need for parsing the eresponse
 
