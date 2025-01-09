@@ -2,6 +2,7 @@ const request = require("request");
 const postmanRequest = require("postman-request");
 const axios = require("axios");
 const chalk = require("chalk");
+const { error } = require("console");
 // import chalk from "chalk.mjs";
 
 const log = console.log;
@@ -19,13 +20,18 @@ const url =
 // 	console.log(body); // Print the HTML for the Google homepage.
 // });
 
+// request({url: url, json: true}, error, response)
 request(url, { json: true }, (error, response, body) => {
 	log(chalk.bold.yellow.inverse("Request"));
-	const data = JSON.parse(body);
+	// const data = JSON.parse(body); //! by setting json to true, there is no need for parsing the eresponse
 
-	console.log(response.body);
-	log(body);
-	log(data.current);
+	// console.log(response.body.location);
+	const data = body.current;
+	console.log(
+		`It is currently ${data.temperature} degrees out there in Leipzig and it feels like ${data.feelslike} degrees out.`
+	);
+
+	// log(data.current);
 });
 
 // postmanRequest(url, function (error, response, body) {
@@ -43,11 +49,18 @@ axios
 		params: {
 			access_key: "6e20e858c69a769813dfac2268cf0ad4",
 			query: "51.300,12.33",
+			units: "f",
 		},
 	})
 	.then(function (response) {
+		const data = response.data.current;
 		console.log(chalk.bold.yellow.inverse("Axios"));
-		console.log(response.data.current);
+		log(response.data.request);
+		log(
+			`It is currently ${data.temperature} degrees out there in Leipzig and it feels like ${data.feelslike} degrees out.`
+		);
+
+		// console.log(response.data.current);
 	})
 	.catch(function (error) {
 		console.log(error);
