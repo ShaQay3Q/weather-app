@@ -68,3 +68,19 @@ axios
 	.finally(function () {
 		// always executed
 	});
+
+// const options = {
+// 	method: "GET",
+// 	url: "https://api.weatherstack.com/current?access_key=6e20e858c69a769813dfac2268cf0ad4",
+// 	params: {
+// 		query: "51.300,12.33",
+// 		units: "f",
+// 	},
+// };
+
+// try {
+// 	const response = await axios.request(options);
+// 	log(response.data);
+// } catch (e) {
+// 	getWeather;
+// }
