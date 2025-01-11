@@ -3,12 +3,15 @@ const postmanRequest = require("postman-request");
 const axios = require("axios");
 const chalk = require("chalk");
 const { error } = require("console");
+require("dotenv").config();
 // import chalk from "chalk.mjs";
+
+const ACCESS_KEY = process.env.ACCESS_KEY;
+const API_KEY = process.env.API_KEY;
 
 const log = console.log;
 
-const url =
-	"https://api.weatherstack.com/current?access_key=6e20e858c69a769813dfac2268cf0ad4&query=51.300,12.33";
+const url = `https://api.weatherstack.com/current?access_key=${ACCESS_KEY}&query=51.300,12.33`;
 
 // request(url, function (error, response, body) {
 // 	log(chalk.bold.yellow.inverse("Request"));
@@ -47,7 +50,7 @@ const url =
 // axios
 // 	.get("https://api.weatherstack.com/current", {
 // 		params: {
-// 			access_key: "6e20e858c69a769813dfac2268cf0ad4",
+// 			access_key: ACCESS_KEY,
 // 			query: "51.300,12.33",
 // 			units: "f",
 // 		},
@@ -73,7 +76,7 @@ const url =
 // postalcode = "04318";
 // state = "Saxony";
 // country = "Germany";
-// api_key = "67824d9e1c3c5071216860wzh3dc463";
+// api_key = API_KEY;
 
 // FORWARD GEOCODE
 const geocodeURL = "https://geocode.maps.co/search?";
@@ -87,7 +90,7 @@ axios
 				// postalcode: "04318",
 				// state: "Saxony",
 				// country: "Germany",
-				api_key: "67824d9e1c3c5071216860wzh3dc463",
+				api_key: API_KEY,
 			},
 		}
 	)
@@ -114,7 +117,7 @@ axios
 
 // const options = {
 // 	method: "GET",
-// 	url: "https://api.weatherstack.com/current?access_key=6e20e858c69a769813dfac2268cf0ad4",
+// 	url: "https://api.weatherstack.com/current?access_key=${ACCESS_KEY}",
 // 	params: {
 // 		query: "51.300,12.33",
 // 		units: "f",
