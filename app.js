@@ -21,18 +21,18 @@ const url =
 // });
 
 // request({url: url, json: true}, error, response)
-request(url + "&units=f", { json: true }, (error, response, body) => {
-	log(chalk.bold.yellow.inverse("Request"));
-	// const data = JSON.parse(body); //! by setting json to true, there is no need for parsing the eresponse
+// request(url + "&units=f", { json: true }, (error, response, body) => {
+// 	log(chalk.bold.yellow.inverse("Request"));
+// 	// const data = JSON.parse(body); //! by setting json to true, there is no need for parsing the eresponse
 
-	// console.log(response.body.location);
-	const data = body.current;
-	console.log(
-		`It is currently ${data.temperature} degrees out there in Leipzig and it feels like ${data.feelslike} degrees out.`
-	);
+// 	// console.log(response.body.location);
+// 	const data = body.current;
+// 	console.log(
+// 		`It is currently ${data.temperature} degrees out there in Leipzig and it feels like ${data.feelslike} degrees out.`
+// 	);
 
-	// log(data.current);
-});
+// 	// log(data.current);
+// });
 
 // postmanRequest(url, function (error, response, body) {
 // console.log(chalk.bold.yellow.inverse("PostmanRequest"));
@@ -44,30 +44,64 @@ request(url + "&units=f", { json: true }, (error, response, body) => {
 // 	console.log(body); // Print the HTML for the Google homepage.
 // });
 
+// axios
+// 	.get("https://api.weatherstack.com/current", {
+// 		params: {
+// 			access_key: "6e20e858c69a769813dfac2268cf0ad4",
+// 			query: "51.300,12.33",
+// 			units: "f",
+// 		},
+// 	})
+// 	.then(function (response) {
+// 		const data = response.data.current;
+// 		console.log(chalk.bold.yellow.inverse("Axios"));
+// 		log(response.data.request);
+// 		log(
+// 			`It is currently ${data.temperature} degrees out there in Leipzig and it feels like ${data.feelslike} degrees out.`
+// 		);
+
+// 		// console.log(response.data.current);
+// 	})
+// 	.catch(function (error) {
+// 		console.log(error);
+// 	})
+// 	.finally(function () {
+// 		// always executed
+// 	});
+
+city = "Leipzig";
+postalcode = "04318";
+state = "Saxony";
+country = "Germany";
+api_key = "67824d9e1c3c5071216860wzh3dc463";
+
 axios
-	.get("https://api.weatherstack.com/current", {
-		params: {
-			access_key: "6e20e858c69a769813dfac2268cf0ad4",
-			query: "51.300,12.33",
-			units: "f",
-		},
-	})
+	.get(
+		// `https://geocode.maps.co/search?city=${city}&state=${state}&postalcode=${postalcode}&country=${country}&api_key=${api_key}`,
+		"https://geocode.maps.co/search?",
+		{
+			params: {
+				city: "Leipzig",
+				postalcode: "04318",
+				state: "Saxony",
+				country: "Germany",
+				api_key: "67824d9e1c3c5071216860wzh3dc463",
+			},
+		}
+	)
 	.then(function (response) {
-		const data = response.data.current;
-		console.log(chalk.bold.yellow.inverse("Axios"));
-		log(response.data.request);
-		log(
-			`It is currently ${data.temperature} degrees out there in Leipzig and it feels like ${data.feelslike} degrees out.`
-		);
+		const data = response.data;
+		console.log(chalk.bold.yellow.inverse("Axios - Geoloction"));
+		log(data);
+		log(`latitute: ${data[0].lat}`);
+		log(`longitute: ${data[0].lon}`);
 
 		// console.log(response.data.current);
 	})
 	.catch(function (error) {
-		console.log(error);
+		console.log("It didn't work!");
 	})
-	.finally(function () {
-		// always executed
-	});
+	.finally(function () {});
 
 // const options = {
 // 	method: "GET",
