@@ -69,11 +69,11 @@ const url =
 // 		// always executed
 // 	});
 
-city = "Leipzig";
-postalcode = "04318";
-state = "Saxony";
-country = "Germany";
-api_key = "67824d9e1c3c5071216860wzh3dc463";
+// city = "Leipzig";
+// postalcode = "04318";
+// state = "Saxony";
+// country = "Germany";
+// api_key = "67824d9e1c3c5071216860wzh3dc463";
 
 axios
 	.get(
@@ -92,9 +92,12 @@ axios
 	.then(function (response) {
 		const data = response.data;
 		console.log(chalk.bold.yellow.inverse("Axios - Geoloction"));
-		log(data);
-		log(`latitute: ${data[0].lat}`);
-		log(`longitute: ${data[0].lon}`);
+		if (data.length === 1) {
+			log(chalk.green("latitute: ") + data[0].lat);
+			log(chalk.green("longitute: ") + data[0].lon);
+		} else {
+			log(chalk.red.inverse("Enter the address more specifically!"));
+		}
 
 		// console.log(response.data.current);
 	})
