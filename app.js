@@ -75,16 +75,18 @@ const url =
 // country = "Germany";
 // api_key = "67824d9e1c3c5071216860wzh3dc463";
 
+// FORWARD GEOCODE
+const geocodeURL = "https://geocode.maps.co/search?";
 axios
 	.get(
 		// `https://geocode.maps.co/search?city=${city}&state=${state}&postalcode=${postalcode}&country=${country}&api_key=${api_key}`,
-		"https://geocode.maps.co/search?",
+		geocodeURL,
 		{
 			params: {
 				city: "Leipzig",
-				postalcode: "04318",
-				state: "Saxony",
-				country: "Germany",
+				// postalcode: "04318",
+				// state: "Saxony",
+				// country: "Germany",
 				api_key: "67824d9e1c3c5071216860wzh3dc463",
 			},
 		}
@@ -92,12 +94,16 @@ axios
 	.then(function (response) {
 		const data = response.data;
 		console.log(chalk.bold.yellow.inverse("Axios - Geoloction"));
-		if (data.length === 1) {
-			log(chalk.green("latitute: ") + data[0].lat);
-			log(chalk.green("longitute: ") + data[0].lon);
-		} else {
-			log(chalk.red.inverse("Enter the address more specifically!"));
-		}
+		// if (data.length === 1) {
+		console.log(
+			chalk.inverse.bold(`coordinates for the ${data[0].display_name} is:`)
+		);
+
+		log(chalk.green("latitute: ") + data[0].lat);
+		log(chalk.green("longitute: ") + data[0].lon);
+		// } else {
+		// log(chalk.red.inverse("Enter the address more specifically!"));
+		// }
 
 		// console.log(response.data.current);
 	})
