@@ -125,10 +125,12 @@ axios
 	})
 	.catch(function (error) {
 		if (error.response) {
-			log(chalk.red.inverse("Unable to fetch the valid data."));
+			log(
+				chalk.red.inverse("Unable to find the coordinates. Try another search!")
+			);
 		} else {
 			// Handles
-			console.log("Unable to connect to the server!");
+			console.log("Unable to connect to location services!");
 		}
 		console.log(error.response.status + " " + error.response.statusText);
 	});
