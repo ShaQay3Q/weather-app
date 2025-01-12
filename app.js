@@ -58,7 +58,7 @@ axios
 		},
 	})
 	.then(function (response) {
-		log(response.status + " " + response.statusText);
+		//! log(response.status + " " + response.statusText);
 		const data = response.data.current;
 		console.log(chalk.bold.yellow.inverse("Weather"));
 		// log(response.data.request);
@@ -70,11 +70,14 @@ axios
 	})
 	.catch(function (error) {
 		if (error.response) {
-			log(error.response.status + " " + error.response.statusText);
-			log(error.response.data.error.message);
-			log("error message " + error.message);
+			// log(error.response.status + " " + error.response.statusText);
+			// log(error.response.data.error.message);
+			// log("error message " + error.message);
+			log(chalk.red.inverse("Unable to find location."));
 		} else {
-			console.log("Unable to connect to the weather server!");
+			console.log(
+				chalk.red.inverse("Unable to connect to the weather server!")
+			);
 		}
 
 		// console.log("Unable to connect to the weather server!");
@@ -110,6 +113,7 @@ axios
 		console.log(
 			chalk.inverse.bold(`coordinates for the ${data[0].display_name} is:`)
 		);
+		//! console.log(response.status + " " + response.statusText);
 
 		log(chalk.green("latitute: ") + data[0].lat);
 		log(chalk.green("longitute: ") + data[0].lon);
@@ -120,8 +124,12 @@ axios
 		// console.log(response.data.current);
 	})
 	.catch(function (error) {
-		console.log("Unable to connect to the server!");
-		console.log(error);
+		if (error.response) {
+			log(chalk.red.inverse("Unable to fetch the valid data."));
+		} else {
+			console.log("Unable to connect to the server!");
+		}
+		console.log(error.response.status + " " + error.response.statusText);
 	});
 
 // const options = {
