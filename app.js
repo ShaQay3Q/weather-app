@@ -8,6 +8,7 @@ require("dotenv").config();
 
 const ACCESS_KEY = process.env.ACCESS_KEY;
 const API_KEY = process.env.API_KEY;
+const KEY = process.env.KEY;
 
 const log = console.log;
 
@@ -47,52 +48,52 @@ const url = `https://api.weatherstack.com/current?access_key=${ACCESS_KEY}&query
 // 	console.log(body); // Print the HTML for the Google homepage.
 // });
 
-// axios
-// 	.get("https://api.weatherstack.com/current", {
-// 		params: {
-// 			access_key: ACCESS_KEY,
-// 			query: "51.300,12.33",
-// 			units: "f",
-// 		},
-// 	})
-// 	.then(function (response) {
-// 		const data = response.data.current;
-// 		console.log(chalk.bold.yellow.inverse("Axios"));
-// 		log(response.data.request);
-// 		log(
-// 			`It is currently ${data.temperature} degrees out there in Leipzig and it feels like ${data.feelslike} degrees out.`
-// 		);
+const weatherURL = "http://api.weatherapi.com/v1/current.json";
+axios
+	.get(weatherURL, {
+		params: {
+			key: KEY,
+			q: "51.300,12.333",
+		},
+	})
+	.then(function (response) {
+		const data = response.data.current;
+		console.log(chalk.bold.yellow.inverse("Axios"));
+		// log(response.data.request);
+		log(
+			`It is currently ${data.temp_c} degrees out there in ${response.data.location.name} and it feels like ${data.feelslike_c} degrees out.`
+		);
 
-// 		// console.log(response.data.current);
-// 	})
-// 	.catch(function (error) {
-// 		console.log(error);
-// 	})
-// 	.finally(function () {
-// 		// always executed
-// 	});
+		// console.log(response.data.current);
+	})
+	.catch(function (error) {
+		console.log(error);
+	})
+	.finally(function () {
+		// always executed
+	});
 
-// city = "Leipzig";
-// postalcode = "04318";
-// state = "Saxony";
-// country = "Germany";
-// api_key = API_KEY;
+city = "Leipzig";
+postalcode = "04318";
+state = "Saxony";
+country = "Germany";
+api_key = API_KEY;
 
 // FORWARD GEOCODE
 const geocodeURL = "https://geocode.maps.co/search?";
 axios
 	.get(
-		// `https://geocode.maps.co/search?city=${city}&state=${state}&postalcode=${postalcode}&country=${country}&api_key=${api_key}`,
-		geocodeURL,
-		{
-			params: {
-				city: "Leipzig",
-				// postalcode: "04318",
-				// state: "Saxony",
-				// country: "Germany",
-				api_key: API_KEY,
-			},
-		}
+		`https://geocode.maps.co/search?city=${city}&state=${state}&postalcode=${postalcode}&country=${country}&api_key=${api_key}`
+		// geocodeURL,
+		// {
+		// 	params: {
+		// 		city: "Leipzig",
+		// 		// postalcode: "04318",
+		// 		// state: "Saxony",
+		// 		// country: "Germany",
+		// 		api_key: API_KEY,
+		// 	},
+		// }
 	)
 	.then(function (response) {
 		const data = response.data;
@@ -111,7 +112,7 @@ axios
 		// console.log(response.data.current);
 	})
 	.catch(function (error) {
-		console.log("It didn't work!");
+		console.log("Unable to connect to the server!");
 	})
 	.finally(function () {});
 
