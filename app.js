@@ -98,7 +98,7 @@ axios
 		geocodeURL,
 		{
 			params: {
-				city: "Leipzig",
+				city: "12",
 				// postalcode: "04318",
 				// state: "Saxony",
 				// country: "Germany",
@@ -127,6 +127,7 @@ axios
 		if (error.response) {
 			log(chalk.red.inverse("Unable to fetch the valid data."));
 		} else {
+			// Handles
 			console.log("Unable to connect to the server!");
 		}
 		console.log(error.response.status + " " + error.response.statusText);
