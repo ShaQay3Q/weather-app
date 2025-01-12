@@ -54,11 +54,13 @@ axios
 		params: {
 			key: KEY,
 			q: "51.300,12.333",
+			// q: "",
 		},
 	})
 	.then(function (response) {
+		log(response.status + " " + response.statusText);
 		const data = response.data.current;
-		console.log(chalk.bold.yellow.inverse("Axios"));
+		console.log(chalk.bold.yellow.inverse("Weather"));
 		// log(response.data.request);
 		log(
 			`It is currently ${data.temp_c} degrees out there in ${response.data.location.name} and it feels like ${data.feelslike_c} degrees out.`
@@ -67,33 +69,39 @@ axios
 		// console.log(response.data.current);
 	})
 	.catch(function (error) {
-		console.log(error);
-	})
-	.finally(function () {
-		// always executed
-	});
+		if (error.response) {
+			log(error.response.status + " " + error.response.statusText);
+			log(error.response.data.error.message);
+			log("error message " + error.message);
+		} else {
+			console.log("Unable to connect to the weather server!");
+		}
 
-city = "Leipzig";
-postalcode = "04318";
-state = "Saxony";
-country = "Germany";
-api_key = API_KEY;
+		// console.log("Unable to connect to the weather server!");
+	})
+	.finally(function () {});
+
+// city = "Leipzig";
+// postalcode = "04318";
+// state = "Saxony";
+// country = "Germany";
+// api_key = API_KEY;
 
 // FORWARD GEOCODE
 const geocodeURL = "https://geocode.maps.co/search?";
 axios
 	.get(
-		`https://geocode.maps.co/search?city=${city}&state=${state}&postalcode=${postalcode}&country=${country}&api_key=${api_key}`
-		// geocodeURL,
-		// {
-		// 	params: {
-		// 		city: "Leipzig",
-		// 		// postalcode: "04318",
-		// 		// state: "Saxony",
-		// 		// country: "Germany",
-		// 		api_key: API_KEY,
-		// 	},
-		// }
+		// `https://geocode.maps.co/search?city=${city}&state=${state}&postalcode=${postalcode}&country=${country}&api_key=${api_key}`
+		geocodeURL,
+		{
+			params: {
+				city: "Leipzig",
+				// postalcode: "04318",
+				// state: "Saxony",
+				// country: "Germany",
+				api_key: API_KEY,
+			},
+		}
 	)
 	.then(function (response) {
 		const data = response.data;
@@ -113,8 +121,8 @@ axios
 	})
 	.catch(function (error) {
 		console.log("Unable to connect to the server!");
-	})
-	.finally(function () {});
+		console.log(error);
+	});
 
 // const options = {
 // 	method: "GET",
