@@ -3,6 +3,14 @@ const forcast = require("./utils/forcast");
 
 // forcast(51.3397, 12.3731, (error, data) => {
 forcast(6564.8, 76576, (error, data) => {
+	console.log("FIRCAST");
+
+	console.log(error);
+	console.log(data);
+});
+
+geocode("Leipzig", (error, data) => {
+	console.log("GEOCODE");
 	console.log(error);
 	console.log(data);
 });
