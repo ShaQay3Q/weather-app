@@ -1,5 +1,6 @@
 const axios = require("axios");
 const chalk = require("chalk");
+const { error } = require("console");
 require("dotenv").config();
 
 const API_KEY = process.env.API_KEY;
@@ -54,9 +55,22 @@ const geoCode = (city, cb) => {
 		})
 		.then(function (response) {
 			const data = response.data;
-			cb(data[0].lat, data[0].lon);
+			log(data);
+			if (data.length !== 0) {
+				console.log(`lat: ${typeof data[0].lat}, lon: ${data[0].lon}`);
+
+				cb(data[0].lat, data[0].lon);
+			} else {
+				log(
+					chalk.red.inverse(
+						"Unable to find the coordinates. Try another search!"
+					)
+				);
+			}
 		})
 		.catch(function (error) {
+			console.log(error);
+
 			if (error.response) {
 				log(
 					chalk.red.inverse(
@@ -67,17 +81,16 @@ const geoCode = (city, cb) => {
 				// Handles
 				console.log("Unable to connect to location services!");
 			}
-			console.log(error.response.status + " " + error.response.statusText);
 		});
 };
 
 //! Only 1 API request per second
 setTimeout(() => {
-	geoCode("Leipzig", showWeather);
+	geoCode("Leipig", showWeather);
 }, 1000);
-setTimeout(() => {
-	geoCode("Dresden", showWeather);
-}, 1000);
-setTimeout(() => {
-	geoCode("Berlin", showWeather);
-}, 1000);
+// setTimeout(() => {
+// 	geoCode("Dresden", showWeather);
+// }, 1000);
+// setTimeout(() => {
+// 	geoCode("Berlin", showWeather);
+// }, 1000);
