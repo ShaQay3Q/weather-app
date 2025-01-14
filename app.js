@@ -88,7 +88,7 @@ const showWeather = (city, cb) => {
 		});
 };
 
-showWeather("12what", fetchWeather);
+showWeather("tehran", fetchWeather);
 
 // //! Only 1 API request per second
 setTimeout(() => {
