@@ -11,6 +11,7 @@ const log = console.log;
 // fetchWeather, acts as Callback function called by showWeather function
 // it receives 2 parameters, error and data. If the error is undefined, then get the info from weather api
 const fetchWeather = (error, data) => {
+	log(data);
 	if (error) {
 		console.log(error);
 	} else {
