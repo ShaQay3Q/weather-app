@@ -11,9 +11,6 @@ const log = console.log;
 // fetchWeather, acts as Callback function called by showWeather function
 // it receives 2 parameters, error and data. If the error is undefined, then get the info from weather api
 const fetchWeather = (error, data) => {
-	console.log("error: " + error);
-	console.log("data: " + data);
-
 	if (error) {
 		console.log(error);
 	} else {
@@ -84,7 +81,7 @@ const showWeather = (city, cb) => {
 		});
 };
 
-showWeather("Leipig", fetchWeather);
+showWeather("12what", fetchWeather);
 
 // //! Only 1 API request per second
 setTimeout(() => {
