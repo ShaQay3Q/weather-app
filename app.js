@@ -11,7 +11,6 @@ const log = console.log;
 // fetchWeather, acts as Callback function called by showWeather function
 // it receives 2 parameters, error and data. If the error is undefined, then get the info from weather api
 const fetchWeather = (error, data) => {
-	log(data);
 	if (error) {
 		console.log(error);
 	} else {
@@ -26,10 +25,17 @@ const fetchWeather = (error, data) => {
 			.then(function (response) {
 				//! log(response.status + " " + response.statusText);
 				const data = response.data.current;
+				const location =
+					response.data.location.name +
+					" (" +
+					response.data.location.region +
+					", " +
+					response.data.location.country +
+					")";
 				if (data) {
 					console.log(chalk.bold.yellow.inverse("Weather Forcast"));
 					log(
-						`It is currently ${data.temp_c} degrees out there in ${response.data.location.name} and it feels like ${data.feelslike_c} degrees out.`
+						`It is currently ${data.temp_c} degrees out there in ${location}, and it feels like ${data.feelslike_c} degrees out.`
 					);
 					log(`Condition: ${data.condition.text}`);
 				} else {
