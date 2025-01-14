@@ -1,9 +1,8 @@
 const axios = require("axios");
 const chalk = require("chalk");
-const { error } = require("console");
 require("dotenv").config();
+const geocode = require("./utils/geocode.js");
 
-const API_KEY = process.env.API_KEY;
 const KEY = process.env.KEY;
 
 const log = console.log;
@@ -54,49 +53,15 @@ const fetchWeather = (error, data) => {
 	}
 };
 
-const showWeather = (city, cb) => {
-	const geocodeURL = "https://geocode.maps.co/search?";
-
-	axios
-		.get(geocodeURL, {
-			params: {
-				city: encodeURIComponent(city), // in a case someone tried to enter problematic script!
-				// postalcode: "04318",
-				// state: "Saxony",
-				// country: "Germany",
-				api_key: API_KEY,
-			},
-		})
-		.then(function (response) {
-			const data = response.data;
-			if (data.length !== 0) {
-				cb(undefined, [data[0].lat, data[0].lon]);
-			} else {
-				cb(
-					"Unable to find the coordinates. Try another search! - then",
-					undefined
-				);
-			}
-		})
-		.catch(function (error) {
-			if (error.response) {
-				cb("Unable to find the coordinates. Try another search!", undefined);
-			} else {
-				// Handles
-				cb("Unable to connect to location services!");
-			}
-		});
-};
-
-showWeather("tehran", fetchWeather);
+geocode("tehran", fetchWeather);
 
 // //! Only 1 API request per second
 setTimeout(() => {
-	showWeather("Leipzig", fetchWeather);
+	geocode("Leipzig", fetchWeather);
 }, 1000);
 setTimeout(() => {
-	showWeather("Dresden", fetchWeather);
+	geocode("Dresden", fetchWeather);
 }, 1000);
 setTimeout(() => {
-	showWeather("Berlin", fetchWeather);
+	geocode("Berlin", fetchWeather);
 }, 1000);
