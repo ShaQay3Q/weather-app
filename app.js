@@ -86,11 +86,11 @@ const geoCode = (city, cb) => {
 
 //! Only 1 API request per second
 setTimeout(() => {
-	geoCode("Leipig", showWeather);
+	geoCode("Leipzig", showWeather);
 }, 1000);
-// setTimeout(() => {
-// 	geoCode("Dresden", showWeather);
-// }, 1000);
-// setTimeout(() => {
-// 	geoCode("Berlin", showWeather);
-// }, 1000);
+setTimeout(() => {
+	geoCode("Dresden", showWeather);
+}, 1000);
+setTimeout(() => {
+	geoCode("Berlin", showWeather);
+}, 1000);
