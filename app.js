@@ -8,45 +8,96 @@ const KEY = process.env.KEY;
 
 const log = console.log;
 
-const showWeather = (lat, lon) => {
-	const weatherURL = "http://api.weatherapi.com/v1/current.json";
-	axios
-		.get(weatherURL, {
-			params: {
-				key: KEY,
-				q: `${lat}, ${lon}`,
-			},
-		})
-		.then(function (response) {
-			//! log(response.status + " " + response.statusText);
-			const data = response.data.current;
-			console.log(chalk.bold.yellow.inverse("Weather"));
-			log(
-				`It is currently ${data.temp_c} degrees out there in ${response.data.location.name} and it feels like ${data.feelslike_c} degrees out.`
-			);
-		})
-		.catch(function (error) {
-			if (error.response) {
-				// log(error.response.status + " " + error.response.statusText);
-				// log(error.response.data.error.message);
-				// log("error message " + error.message);
-				log(chalk.red.inverse("Unable to find location."));
-			} else {
-				console.log(
-					chalk.red.inverse("Unable to connect to the weather server!")
-				);
-			}
-		});
+// fetchWeather, acts as Callback function called by showWeather function
+// it receives 2 parameters, error and data. If the error is undefined, then get the info from weather api
+const fetchWeather = (error, data) => {
+	if (error) {
+		console.log(error);
+	} else {
+		const weatherURL = "http://api.weatherapi.com/v1/current.json";
+		axios
+			.get(weatherURL, {
+				params: {
+					key: KEY,
+					q: `${data[0]}, ${data[1]}`,
+				},
+			})
+			.then(function (response) {
+				if (error) {
+					log(error);
+				} else {
+					//! log(response.status + " " + response.statusText);
+					const data = response.data.current;
+					console.log(chalk.bold.yellow.inverse("Weather"));
+					log(
+						`It is currently ${data.temp_c} degrees out there in ${response.data.location.name} and it feels like ${data.feelslike_c} degrees out.`
+					);
+				}
+			})
+			.catch(function (error) {
+				if (error.response) {
+					log(chalk.red.inverse("Unable to find location."));
+				} else {
+					console.log(
+						chalk.red.inverse("Unable to connect to the weather server!")
+					);
+				}
+			});
+	}
 };
 
-const geoCode = (city, cb) => {
-	// FORWARD GEOCODE
+// const geoCode = (city, cb) => {
+// 	// FORWARD GEOCODE
+// 	const geocodeURL = "https://geocode.maps.co/search?";
+
+// 	axios
+// 		.get(geocodeURL, {
+// 			params: {
+// 				city: city,
+// 				// postalcode: "04318",
+// 				// state: "Saxony",
+// 				// country: "Germany",
+// 				api_key: API_KEY,
+// 			},
+// 		})
+// 		.then(function (response) {
+// 			const data = response.data;
+// 			log(data);
+// 			if (data.length !== 0) {
+// 				console.log(`lat: ${typeof data[0].lat}, lon: ${data[0].lon}`);
+
+// 				cb(data[0].lat, data[0].lon);
+// 			} else {
+// 				log(
+// 					chalk.red.inverse(
+// 						"Unable to find the coordinates. Try another search!"
+// 					)
+// 				);
+// 			}
+// 		})
+// 		.catch(function (error) {
+// 			console.log(error);
+
+// 			if (error.response) {
+// 				log(
+// 					chalk.red.inverse(
+// 						"Unable to find the coordinates. Try another search!"
+// 					)
+// 				);
+// 			} else {
+// 				// Handles
+// 				console.log("Unable to connect to location services!");
+// 			}
+// 		});
+// };
+
+const showWeather = (city, cb) => {
 	const geocodeURL = "https://geocode.maps.co/search?";
 
 	axios
 		.get(geocodeURL, {
 			params: {
-				city: city,
+				city: encodeURIComponent(city), // in a case someone tried to enter problematic script!
 				// postalcode: "04318",
 				// state: "Saxony",
 				// country: "Germany",
@@ -55,42 +106,34 @@ const geoCode = (city, cb) => {
 		})
 		.then(function (response) {
 			const data = response.data;
-			log(data);
 			if (data.length !== 0) {
-				console.log(`lat: ${typeof data[0].lat}, lon: ${data[0].lon}`);
-
-				cb(data[0].lat, data[0].lon);
+				cb(undefined, [data[0].lat, data[0].lon]);
 			} else {
-				log(
-					chalk.red.inverse(
-						"Unable to find the coordinates. Try another search!"
-					)
+				cb(
+					"Unable to find the coordinates. Try another search! - then",
+					undefined
 				);
 			}
 		})
 		.catch(function (error) {
-			console.log(error);
-
 			if (error.response) {
-				log(
-					chalk.red.inverse(
-						"Unable to find the coordinates. Try another search!"
-					)
-				);
+				cb("Unable to find the coordinates. Try another search!", undefined);
 			} else {
 				// Handles
-				console.log("Unable to connect to location services!");
+				cb("Unable to connect to location services!");
 			}
 		});
 };
 
-//! Only 1 API request per second
+showWeather("Leipig", fetchWeather);
+
+// //! Only 1 API request per second
 setTimeout(() => {
-	geoCode("Leipzig", showWeather);
+	showWeather("Leipzig", fetchWeather);
 }, 1000);
 setTimeout(() => {
-	geoCode("Dresden", showWeather);
+	showWeather("Dresden", fetchWeather);
 }, 1000);
 setTimeout(() => {
-	geoCode("Berlin", showWeather);
+	showWeather("Berlin", fetchWeather);
 }, 1000);
