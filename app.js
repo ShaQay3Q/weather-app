@@ -11,6 +11,9 @@ const log = console.log;
 // fetchWeather, acts as Callback function called by showWeather function
 // it receives 2 parameters, error and data. If the error is undefined, then get the info from weather api
 const fetchWeather = (error, data) => {
+	console.log("error: " + error);
+	console.log("data: " + data);
+
 	if (error) {
 		console.log(error);
 	} else {
@@ -23,15 +26,16 @@ const fetchWeather = (error, data) => {
 				},
 			})
 			.then(function (response) {
-				if (error) {
-					log(error);
-				} else {
-					//! log(response.status + " " + response.statusText);
-					const data = response.data.current;
-					console.log(chalk.bold.yellow.inverse("Weather"));
+				//! log(response.status + " " + response.statusText);
+				const data = response.data.current;
+				if (data) {
+					console.log(chalk.bold.yellow.inverse("Weather Forcast"));
 					log(
 						`It is currently ${data.temp_c} degrees out there in ${response.data.location.name} and it feels like ${data.feelslike_c} degrees out.`
 					);
+					log(`Condition: ${data.condition.text}`);
+				} else {
+					console.log("Unable to load the forcast");
 				}
 			})
 			.catch(function (error) {
@@ -45,51 +49,6 @@ const fetchWeather = (error, data) => {
 			});
 	}
 };
-
-// const geoCode = (city, cb) => {
-// 	// FORWARD GEOCODE
-// 	const geocodeURL = "https://geocode.maps.co/search?";
-
-// 	axios
-// 		.get(geocodeURL, {
-// 			params: {
-// 				city: city,
-// 				// postalcode: "04318",
-// 				// state: "Saxony",
-// 				// country: "Germany",
-// 				api_key: API_KEY,
-// 			},
-// 		})
-// 		.then(function (response) {
-// 			const data = response.data;
-// 			log(data);
-// 			if (data.length !== 0) {
-// 				console.log(`lat: ${typeof data[0].lat}, lon: ${data[0].lon}`);
-
-// 				cb(data[0].lat, data[0].lon);
-// 			} else {
-// 				log(
-// 					chalk.red.inverse(
-// 						"Unable to find the coordinates. Try another search!"
-// 					)
-// 				);
-// 			}
-// 		})
-// 		.catch(function (error) {
-// 			console.log(error);
-
-// 			if (error.response) {
-// 				log(
-// 					chalk.red.inverse(
-// 						"Unable to find the coordinates. Try another search!"
-// 					)
-// 				);
-// 			} else {
-// 				// Handles
-// 				console.log("Unable to connect to location services!");
-// 			}
-// 		});
-// };
 
 const showWeather = (city, cb) => {
 	const geocodeURL = "https://geocode.maps.co/search?";
