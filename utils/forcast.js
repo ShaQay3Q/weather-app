@@ -13,30 +13,30 @@ const forcast = (lat, lon, callback) => {
 			},
 		})
 		.then(function (response) {
-			//! log(response.status + " " + response.statusText);
-			const data = response.data.current;
-			const location =
-				response.data.location.name +
-				" (" +
-				response.data.location.region +
-				", " +
-				response.data.location.country +
-				")";
-			if (data) {
-				callback(
-					undefined,
-					`It is currently ${data.temp_c} degrees out there in ${location}, and it feels like ${data.feelslike_c} degrees out.
-Condition: ${data.condition.text}`
-				);
-			} else {
-				callback("Unable to load the forcast", undefined);
+			// Validate response structure
+			if (!response.data?.current || !response.data?.location) {
+				throw new Error("Invalid response from weather service.");
 			}
+			//! Object Destructuring
+			// extract properties (current and location) from the response.data object.
+			// and assigne them to "data" and "location"
+			const { current: data, location: location } = response.data;
+			const locationDetails = `${location.name} (${location.region}, ${location.country})`;
+
+			callback(
+				undefined,
+				`It is currently ${data.temp_c} degrees out there in ${locationDetails}, and it feels like ${data.feelslike_c} degrees out.
+Condition: ${data.condition.text}`
+			);
 		})
 		.catch(function (error) {
-			console.log(error);
-
+			// Handles errors from the API
 			if (error.response) {
 				callback("Unable to find location.", undefined);
+				// Handles validation errors
+			} else if (error.message) {
+				callback(error.message, undefined);
+				// Handles connection or unexpected errors
 			} else {
 				callback("Unable to connect to the weather service!", undefined);
 			}

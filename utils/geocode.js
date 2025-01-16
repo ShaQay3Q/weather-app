@@ -18,23 +18,24 @@ const geocode = (city, callback) => {
 		})
 		.then(function (response) {
 			const data = response.data;
-			if (data.length !== 0) {
-				callback(undefined, [data[0].lat, data[0].lon]);
-			} else {
-				callback(
-					"Unable to find the coordinates. Try another search! - then",
-					undefined
-				);
+			if (data.length === 0) {
+				// Handle errors cause by unexpected resaults in promise => // ! Validation Error
+				throw new Error("Unable to find the coordinates. Try another search!");
 			}
+			callback(undefined, [data[0].lat, data[0].lon]);
 		})
 		.catch(function (error) {
+			// Handles errors from the API
 			if (error.response) {
 				callback(
 					"Unable to find the coordinates. Try another search!",
 					undefined
 				);
+				// Handles validation errors
+			} else if (error.message) {
+				callback(error.message, undefined);
+				// Handles connection or unexpected errors
 			} else {
-				// Handles
 				callback("Unable to connect to location services!", undefined);
 			}
 		});
