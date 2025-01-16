@@ -3,13 +3,13 @@ require("dotenv").config();
 
 const KEY = process.env.KEY;
 
-const forcast = (lat, lon, callback) => {
+const forcast = (latitute, longitute, callback) => {
 	const weatherURL = "http://api.weatherapi.com/v1/current.json";
 	axios
 		.get(weatherURL, {
 			params: {
 				key: KEY,
-				q: `${encodeURIComponent(lat)}, ${encodeURIComponent(lon)}`,
+				q: `${encodeURIComponent(latitute)}, ${encodeURIComponent(longitute)}`,
 			},
 		})
 		.then(function (response) {
@@ -17,7 +17,7 @@ const forcast = (lat, lon, callback) => {
 			if (!response.data?.current || !response.data?.location) {
 				throw new Error("Invalid response from weather service.");
 			}
-			//! Object Destructuring
+			//! Object Destructuring - before passing down the "display_name"
 			// extract properties (current and location) from the response.data object.
 			// and assigne them to "data" and "location"
 			const { current: data, location: location } = response.data;

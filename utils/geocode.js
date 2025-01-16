@@ -18,11 +18,16 @@ const geocode = (city, callback) => {
 		})
 		.then(function (response) {
 			const data = response.data;
+
 			if (data.length === 0) {
 				// Handle errors cause by unexpected resaults in promise => // ! Validation Error
 				throw new Error("Unable to find the coordinates. Try another search!");
 			}
-			callback(undefined, [data[0].lat, data[0].lon]);
+			callback(undefined, {
+				latitute: data[0].lat,
+				longitute: data[0].lon,
+				location: data[0].display_name,
+			});
 		})
 		.catch(function (error) {
 			// Handles errors from the API
