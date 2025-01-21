@@ -16,15 +16,15 @@ if (!input) {
 			return console.log(error);
 		}
 		// forcast(51.3397, 12.3731, (error, data) => {
-		forcast(data.latitute, data.longitute, (error, focastData) => {
+		forcast(({ location } = data), (error, focastData) => {
+			//! sending data as object down as first argument, just use the location here!
 			console.log("FIRCAST");
 			if (error) {
 				return console.log(error);
 			}
 
-			console.log(data.location);
+			console.log(location);
 			console.log(focastData);
 		});
 	});
 }
-

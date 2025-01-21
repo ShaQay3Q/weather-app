@@ -2,8 +2,8 @@ const axios = require("axios");
 require("dotenv").config();
 
 const KEY = process.env.KEY;
-
-const forcast = (latitute, longitute, callback) => {
+//! getting propertes of dataInput that I use them here
+const forcast = ({ latitute, longitute } = dataInput, callback) => {
 	const weatherURL = "http://api.weatherapi.com/v1/current.json";
 	axios
 		.get(weatherURL, {
@@ -20,13 +20,15 @@ const forcast = (latitute, longitute, callback) => {
 			//! Object Destructuring - before passing down the "display_name"
 			// extract properties (current and location) from the response.data object.
 			// and assigne them to "data" and "location"
-			const { current: data, location: location } = response.data;
-			const locationDetails = `${location.name} (${location.region}, ${location.country})`;
+			const { current: data, location } = response.data;
+			const { temp_c, feelslike_c, condition } = data;
+			const { name, region, country } = location;
+			const locationDetails = `${name} (${region}, ${country})`;
 
 			callback(
 				undefined,
-				`It is currently ${data.temp_c} degrees out there in ${locationDetails}, and it feels like ${data.feelslike_c} degrees out.
-Condition: ${data.condition.text}`
+				`It is currently ${temp_c} degrees out there in ${locationDetails}, and it feels like ${feelslike_c} degrees out.
+Condition: ${condition.text}`
 			);
 		})
 		.catch(function (error) {

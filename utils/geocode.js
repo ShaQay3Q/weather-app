@@ -3,6 +3,13 @@ require("dotenv").config();
 
 const API_KEY = process.env.API_KEY;
 
+// const address = {
+// 	city: city,
+// 	postalcode: postalcode,
+// 	state: state,
+// 	country: country,
+// };
+
 const geocode = (city, callback) => {
 	const geocodeURL = "https://geocode.maps.co/search?";
 
@@ -10,7 +17,7 @@ const geocode = (city, callback) => {
 		.get(geocodeURL, {
 			params: {
 				city: encodeURIComponent(city), // in a case someone tried to enter problematic script!
-				// postalcode: "encodeURIComponent(",
+				// postalcode: encodeURIComponent(postalcode),
 				// state: "Saxony",
 				// country: "Germany",
 				api_key: API_KEY,
@@ -19,15 +26,20 @@ const geocode = (city, callback) => {
 		.then(function (response) {
 			const data = response.data;
 
-			if (data.length === 0) {
-				// Handle errors cause by unexpected resaults in promise => // ! Validation Error
-				throw new Error("Unable to find the coordinates. Try another search!");
+			if (!data.length || !data[0] || typeof data[0] !== "object") {
+				throw new Error("Invalid response structure from the API!");
 			}
-			callback(undefined, {
+
+			const locationDetails = {
 				latitute: data[0].lat,
 				longitute: data[0].lon,
 				location: data[0].display_name,
-			});
+			};
+
+			callback(
+				undefined,
+				({ latitute, longitute, location } = locationDetails)
+			);
 		})
 		.catch(function (error) {
 			// Handles errors from the API
