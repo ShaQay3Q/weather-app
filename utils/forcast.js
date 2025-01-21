@@ -1,4 +1,5 @@
 const axios = require("axios");
+const request = require("request");
 require("dotenv").config();
 
 const KEY = process.env.KEY;
@@ -13,16 +14,18 @@ const forcast = (latitute, longitute, callback) => {
 				q: `${encodeURIComponent(latitute)}, ${encodeURIComponent(longitute)}`,
 			},
 		})
-		.then(function (response) {
+		.then(function ({ data } = response) {
+			// console.log(data);
+
 			// Validate response structure
-			if (!response.data?.current || !response.data?.location) {
+			if (!data?.current || !data?.location) {
 				throw new Error("Invalid response from weather service.");
 			}
 			//! Object Destructuring - before passing down the "display_name"
 			// extract properties (current and location) from the response.data object.
 			// and assigne them to "data" and "location"
-			const { current: data, location } = response.data;
-			const { temp_c, feelslike_c, condition } = data;
+			const { current, location } = data;
+			const { temp_c, feelslike_c, condition } = current;
 			const { name, region, country } = location;
 			const locationDetails = `${name} (${region}, ${country})`;
 
@@ -33,12 +36,13 @@ Condition: ${condition.text}`
 			);
 		})
 		.catch(function (error) {
+			const { response, message } = error;
 			// Handles errors from the API
-			if (error.response) {
+			if (response) {
 				callback("Unable to find location.", undefined);
 				// Handles validation errors
-			} else if (error.message) {
-				callback(error.message, undefined);
+			} else if (message) {
+				callback(message, undefined);
 				// Handles connection or unexpected errors
 			} else {
 				callback("Unable to connect to the weather service!", undefined);

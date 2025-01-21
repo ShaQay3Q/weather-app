@@ -11,8 +11,9 @@ if (!input) {
 	// Chain multiple callbacks to do multiple things in specific order
 
 	// geocode(input, (error, { latitute, longitute, location }) => { //! corect
-	// geocode(input, (error, { latitute, longitute, location } = data) => { //! OR
-	geocode(input, (error, { latitute, longitute, location } = {}) => { //! in a case of error, pass down and empty object
+	geocode(input, (error, { latitute, longitute, location } = data) => {
+		//! OR // like it better!
+		// geocode(input, (error, { latitute, longitute, location } = {}) => { //! in a case of error, pass down and empty object
 		//! better
 		// geocode(input, (error, data) => {
 		console.log("GEOCODE");
@@ -22,7 +23,7 @@ if (!input) {
 		forcast(latitute, longitute, (error, focastData) => {
 			// forcast(({ location } = data), (error, focastData) => {
 			//! sending data as object down as first argument, just use the location here!
-			console.log("FIRCAST");
+			console.log("FORCAST");
 			if (error) {
 				return console.log(error);
 			}

@@ -23,9 +23,7 @@ const geocode = (city, callback) => {
 				api_key: API_KEY,
 			},
 		})
-		.then(function (response) {
-			const data = response.data;
-
+		.then(function ({ data } = response) {
 			if (!data.length || !data[0] || typeof data[0] !== "object") {
 				throw new Error("Invalid response structure from the API!");
 			}
@@ -42,15 +40,16 @@ const geocode = (city, callback) => {
 			);
 		})
 		.catch(function (error) {
+			const { response, message } = error;
 			// Handles errors from the API
-			if (error.response) {
+			if (response) {
 				callback(
 					"Unable to find the coordinates. Try another search!",
 					undefined
 				);
 				// Handles validation errors
-			} else if (error.message) {
-				callback(error.message, undefined);
+			} else if (message) {
+				callback(message, undefined);
 				// Handles connection or unexpected errors
 			} else {
 				callback("Unable to connect to location services!", undefined);
