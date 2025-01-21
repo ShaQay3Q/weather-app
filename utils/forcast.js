@@ -2,8 +2,9 @@ const axios = require("axios");
 require("dotenv").config();
 
 const KEY = process.env.KEY;
-//! getting propertes of dataInput that I use them here
-const forcast = ({ latitute, longitute } = dataInput, callback) => {
+// // ! getting propertes of dataInput that I use them here
+// const forcast = ({ latitute, longitute } = dataInput, callback) => {
+const forcast = (latitute, longitute, callback) => {
 	const weatherURL = "http://api.weatherapi.com/v1/current.json";
 	axios
 		.get(weatherURL, {
