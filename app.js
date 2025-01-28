@@ -11,7 +11,7 @@ if (!input) {
 	// Chain multiple callbacks to do multiple things in specific order
 
 	// geocode(input, (error, { latitute, longitute, location }) => { //! corect
-	geocode(input, (error, { latitute, longitute, location } = data) => {
+	geocode(input, (error, { latitute, longitute, location } = {}) => {
 		//! OR // like it better!
 		// geocode(input, (error, { latitute, longitute, location } = {}) => { //! in a case of error, pass down and empty object
 		//! better

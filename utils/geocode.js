@@ -25,7 +25,8 @@ const geocode = (city, callback) => {
 		})
 		.then(function ({ data } = response) {
 			if (!data.length || !data[0] || typeof data[0] !== "object") {
-				throw new Error("Invalid response structure from the API!");
+				throw new Error("Unable to find the coordinates. Try another search!");
+				// throw new Error("Invalid response structure from the API!");
 			}
 
 			const locationDetails = {
